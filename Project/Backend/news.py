@@ -4,51 +4,40 @@ This file contains the news class, which is responsible for notifications.
 Author: Tito Burbano Plazas <titoalejandro3118@gmail.com>
 """
 
+from typing import Optional, List
+from .users import User
+from .music import Song, Album, Playlist  
+#from database import Database  
+import datetime  
+
 class News:
-    """This class is responsible for notifying users of new releases, or messages."""
-    def __init__(self, message:str, sender: Optional[User] = None, recipient: Optional[User] = None):
-        pass
+    """
+    This class is responsible for notifying users of new releases or messages.
+    """
 
-    def send(self) -> None:
-        """This method is used to send the notification."""
-        pass
+    def __init__(self):
+        self.notifications = []  
+        #self.database = Database()  
 
-    def set_message(self, content: str) -> None:
-        """
-        This method is used to establish the content of the message that is to be sent.
+    def send(self, message: str, sender: Optional[User] = None, recipient: Optional[User] = None) -> None:
+        """This method sends the notification"""
         
-        Args:
-           content (str): The content of the message
-        """
-        pass
+        notification = {
+            "message": message,
+            "sender": sender.username if sender else None,
+            "recipient": recipient.username if recipient else None,
+            "timestamp": datetime.datetime.now()  # Fecha y hora de la notificación
+        }
 
-    def get_recipient(self) -> Optional[User]:
+        #self.notifications.append(notification)
+
+        #self.database.store_notification(notification)
+
+    def get_notifications(self) -> List[dict]:
         """
-        This method is used to obtain the information of the user who receipt the message.
+        This method returns all stored notifications.
 
         Returns:
-              Optional [User]: User receiving the message, or a None.
+            List[dict]: List of all stored notifications.
         """
-        pass
-
-    def notify_release(self, song: Song, album: Album) -> None:
-        """
-        This method notifies about new releases.
-
-        Args: 
-           song (Song): The song that is launched.
-           album (Album): The album that is launched.
-        """
-        pass
-
-    def notify_shared(self, song: Song, playlist: Playlist, sender: User, recipient: User) -> None:
-        """
-        This method notifies about new shares.
-
-        Args: 
-           song (Song): The song that is shared.
-           playlist (Playlist): The playlist that is shared.
-           sender (User): The user who shares.
-           recipient (User): The user who receives.
-        """ 
-        pass
+        return self.notifications  

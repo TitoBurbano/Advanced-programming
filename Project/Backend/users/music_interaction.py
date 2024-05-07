@@ -1,33 +1,36 @@
 """
-This file contains the class for music-related interactions.
+This file contains the class for user-music interactions.
 
 Author: Tito Burbano Plazas <titoalejandro3118@gmail.com>
 """
 
+from typing import List
+from ..music import Song, Playlist  
+
 class MusicInteraction:
-    """
-    This class provides various interactions with music content, such as searching 
-    for songs, creating playlists, receiving suggestions, and liking songs.
-    """
+    """This class provides various interactions with music content."""
 
     def __init__(self):
-        pass
-    
-    def search(self, keyword: str) -> List[Song]:
+        self.playlists = [] 
+        self.liked_songs = {}  
+
+    def search(self, keyword: str, songs: List[Song]) -> List[Song]:
         """
-        This method is used to search for songs, based on a keyword
+        Searches for songs based on a keyword.
 
         Args:
             keyword (str): The search keyword used to find songs.
+            songs (List[Song]): List of available songs.
 
         Returns:
             List[Song]: A list of songs matching the given keyword.
         """
-        pass
-    
+        
+        return [song for song in songs if keyword.lower() in song.title.lower() or keyword.lower() in song.author.lower()]
+
     def create_playlist(self, playlist_name: str) -> Playlist:
         """
-        This method is used to creates a new playlist.
+        Creates a new playlist with a given name.
 
         Args:
             playlist_name (str): The name of the new playlist.
@@ -35,22 +38,32 @@ class MusicInteraction:
         Returns:
             Playlist: The created playlist.
         """
-        pass
-    
-    def receive_suggestions(self) -> List[Song]:
+        new_playlist = Playlist(playlist_code=len(self.playlists), name=playlist_name)
+        self.playlists.append(new_playlist)
+        return new_playlist
+
+    def receive_suggestions(self, liked_songs: List[Song]) -> List[Song]:
         """
-        Receives a list of song suggestions based on user preferences or history.
+        Receives song suggestions based on user preferences or history.
 
         Returns:
             List[Song]: A list of suggested songs.
         """
-        pass
-    
+        
+        suggested_songs = []
+        for song in liked_songs:
+            suggested_songs.extend([s for s in liked_songs if s.author == song.author or s.genre == song.genre])
+
+        return list(set(suggested_songs))
+
     def give_like(self, song: Song) -> None:
         """
-        This method is used to Like songs, indicating user preference.
+        This method is used to like songs, indicating user preference.
 
         Args:
             song (Song): The song to like.
         """
-        pass
+        if song not in self.liked_songs:
+            self.liked_songs[song] = 1  
+        else:
+            self.liked_songs[song] += 1
