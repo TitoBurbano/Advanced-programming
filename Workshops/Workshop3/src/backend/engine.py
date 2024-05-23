@@ -1,5 +1,6 @@
-class Engine:
-  def __init__(self, tyype: str, potency: int, weight: int):
-    self.tyype= tyype
-    self.potency= potency
-    self.weight= weight
+from pydantic import BaseModel
+class Engine(BaseModel):
+    engine_type: str
+    potency: int
+    weight: int
+
