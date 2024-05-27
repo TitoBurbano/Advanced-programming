@@ -27,3 +27,25 @@ async function callWebService() {
         console.error('Error:', error);
     }
 }
+
+//adding Call_table function
+
+async function callTable() {
+    try {
+        const response = await fetch('http://localhost/products');
+        const data = await response.json();
+        
+        let table = '<table>';
+        table += '<tr><th>ID</th><th>Name</th><th>Description</th></tr>';
+        
+        data.forEach(item => {
+            table += `<tr><td>${item.id}</td><td>${item.name}</td><td>${item.description}</td></tr>`;
+        });
+        
+        table += '</table>';
+        
+        document.getElementById('result').innerHTML = table;
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
