@@ -1,19 +1,31 @@
 <html>
-<head>
-    <title>Workshop 4 - AP</title>
-    <meta charset="UTF-8">
-    <meta name="description" content="This is a simple example to explore OSI layers in a simple network">
-    <link rel="stylesheet" type="text/css" href="styles.css">
-    <script src="functions.js"></script>
-</head>
-<body>
-    <h1>Workshop 4 - AP</h1>
-    <h2>Full-Stack Test</h2>
-    <p>Click on the buttons to explore services</p>
-    <div>
-        <button onclick="callMessage()">Get Message</button>
-        <button onclick="callTable()">Get Table</button>
-    </div>
-    <div id="result"></div>
-</body>
+    <head>
+        <title>Workshop 4 - AP</title>
+        <meta charset="UTF-8">
+        <meta name="description" content="This is a simple example to explore OSI layers in a simple network">
+        <link rel="stylesheet" type="text/css" href="styles.css">
+    </head>
+    <body>
+        <h1>Workshop 4 - AP</h1>
+        <h2>Full-Stack Test</h2>
+        <p>Click on the buttons to explore services</p>
+        <div>
+            <button onclick="callMessage()">Get Message</button>
+            <button onclick="callWebService()">Get Table</button>
+            <button onclick="showForm()">Get Form</button>
+        </div>
+        <div id="result"></div>
+        <div id="form" style="display: none;">
+            <form id="myForm" onsubmit="event.preventDefault(); addProduct();">
+                <label for="productId">Product ID:</label><br>
+                <input type="text" id="productId" name="productId"><br>
+                <label for="name">Product Name:</label><br>
+                <input type="text" id="name" name="name"><br>
+                <label for="description">Product Description:</label><br>
+                <input type="text" id="description" name="description"><br>
+                <input type="submit" value="Submit">
+            </form>
+        </div>
+        <script src="functions.js"></script>
+    </body>
 </html>

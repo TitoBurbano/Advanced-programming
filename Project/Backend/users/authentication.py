@@ -6,9 +6,9 @@ Author: Tito Burbano Plazas <titoalejandro3118@gmail.com>
 from pydantic import BaseModel
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+from .schemes import UserResponse
 from ..models import User
 from .profile import Profile
-from schemes import UserResponse
 class Authentication:
     """
     This class manages user authentication operations, including registration 

@@ -5,28 +5,41 @@ Author: Tito Burbano Plazas <titoalejandro3118@gmail.com>
 """
 
 from typing import List
-from ..music import Song, Playlist  
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy import create_engine
+from ..models import Song, Playlist
+from ..database import Base
 
 class MusicInteraction:
-    """This class provides various interactions with music content."""
+    """
+    This class provides various interactions with music content.
+    """
 
-    def __init__(self):
-        self.playlists = [] 
-        self.liked_songs = {}  
+    def __init__(self, db_url: str):
+        """
+        Initializes the MusicInteraction class with the database URL.
 
-    def search(self, keyword: str, songs: List[Song]) -> List[Song]:
+        Args:
+            db_url (str): The URL for connecting to the PostgreSQL database.
+        """
+        self.engine = create_engine(db_url)
+        Session = sessionmaker(bind=self.engine)
+        self.session = Session()
+
+    def search(self, keyword: str) -> List[Song]:
         """
         Searches for songs based on a keyword.
 
         Args:
             keyword (str): The search keyword used to find songs.
-            songs (List[Song]): List of available songs.
 
         Returns:
             List[Song]: A list of songs matching the given keyword.
         """
-        
-        return [song for song in songs if keyword.lower() in song.title.lower() or keyword.lower() in song.author.lower()]
+        return self.session.query(Song).filter(
+            (Song.title.ilike(f'%{keyword}%')) | 
+            (Song.artist.ilike(f'%{keyword}%'))
+        ).all()
 
     def create_playlist(self, playlist_name: str) -> Playlist:
         """
@@ -38,8 +51,9 @@ class MusicInteraction:
         Returns:
             Playlist: The created playlist.
         """
-        new_playlist = Playlist(playlist_code=len(self.playlists), name=playlist_name)
-        self.playlists.append(new_playlist)
+        new_playlist = Playlist(name=playlist_name)
+        self.session.add(new_playlist)
+        self.session.commit()
         return new_playlist
 
     def receive_suggestions(self, liked_songs: List[Song]) -> List[Song]:
@@ -49,21 +63,22 @@ class MusicInteraction:
         Returns:
             List[Song]: A list of suggested songs.
         """
-        
         suggested_songs = []
         for song in liked_songs:
-            suggested_songs.extend([s for s in liked_songs if s.author == song.author or s.genre == song.genre])
+            suggested_songs.extend(self.session.query(Song).filter(
+                (Song.artist == song.artist) | (Song.genre == song.genre)
+            ).all())
 
         return list(set(suggested_songs))
 
-    def give_like(self, song: Song) -> None:
+    def give_like(self, song_id: int) -> None:
         """
         This method is used to like songs, indicating user preference.
 
         Args:
-            song (Song): The song to like.
+            song_id (int): The ID of the song to like.
         """
-        if song not in self.liked_songs:
-            self.liked_songs[song] = 1  
-        else:
-            self.liked_songs[song] += 1
+        song = self.session.query(Song).get(song_id)
+        if song:
+            song.likes += 1
+            self.session.commit()
