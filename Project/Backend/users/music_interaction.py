@@ -1,14 +1,7 @@
-"""
-This file contains the class for user-music interactions.
-
-Author: Tito Burbano Plazas <titoalejandro3118@gmail.com>
-"""
-
 from typing import List
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
 from ..models import Song, Playlist
-from ..database import Base
 
 class MusicInteraction:
     """
@@ -82,3 +75,4 @@ class MusicInteraction:
         if song:
             song.likes += 1
             self.session.commit()
+

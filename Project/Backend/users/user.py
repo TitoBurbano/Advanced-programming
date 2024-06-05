@@ -51,15 +51,15 @@ class User:
         """Gives a like to a song, indicating user preference."""
         self.music_interaction.give_like(song)
 
-    def manage_friends(self, friend: User, action: str) -> None:
+    def manage_friends(self, friend: 'User', action: str) -> None:
         """Adds or removes a friend based on the specified action."""
         self.social_interaction.manage_friends(friend, action)
 
-    def follow(self, entity: Union[User, Artist]) -> None:
+    def follow(self, entity: Union['User', 'Artist']) -> None:
         """Follows another user or artist."""
         self.social_interaction.follow(entity)
 
-    def share(self, song: Song, to_user: User) -> None:
+    def share(self, song: Song, to_user: 'User') -> None:
         """Shares a song with another user."""
         self.social_interaction.share(song, to_user)
 
@@ -78,12 +78,8 @@ class Artist(User):
         Args:
             song (Song): The song to be uploaded by the artist.
         """
+        self.song.create_song(song)
         print(f"Song '{song.title}' uploaded by artist '{self.profile.name}'.")
-        self.news.send(
-            message=f"New song '{song.title}' uploaded by {self.profile.name}.",
-            sender=self,
-            recipient=None  
-        )
 
     def upload_album(self, album: Album) -> None:
         """
@@ -92,10 +88,7 @@ class Artist(User):
         Args:
             album (Album): The album to be uploaded by the artist.
         """
+        self.album.create_album(album)
         print(f"Album '{album.title}' uploaded by artist '{self.profile.name}'.")
-        self.news.send(
-            message=f"New album '{album.title}' uploaded by {self.profile.name}.",
-            sender=self,
-            recipient=None  
-        )
+
 

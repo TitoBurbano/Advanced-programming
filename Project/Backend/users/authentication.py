@@ -1,14 +1,8 @@
-"""
-This file contains the class for user authentication operations.
-
-Author: Tito Burbano Plazas <titoalejandro3118@gmail.com>
-"""
-from pydantic import BaseModel
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-from .schemes import UserResponse
-from ..models import User
+import hashlib
+import psycopg2
+from psycopg2 import sql
 from .profile import Profile
+
 class Authentication:
     """
     This class manages user authentication operations, including registration 
@@ -22,47 +16,47 @@ class Authentication:
         Args:
             db_url (str): The URL for connecting to the PostgreSQL database.
         """
-        self.engine = create_engine(db_url)
-        Session = sessionmaker(bind=self.engine)
-        self.session = Session()
+        self.conn = psycopg2.connect(db_url)
+        self.cursor = self.conn.cursor()
 
-    def sign_in(self, username: str, password: str) -> UserResponse:
+   def sign_in(self, username: str, password: str):
         """
         Registers a new user in the system with a specified username and password.
 
         Args:
            username (str): The desired username for the new user.
            password (str): The password for the new user.
-
-        Returns:
-            UserResponse: The response containing user data.
         """
-        user = User(username=username, password=password)
-        self.session.add(user)
-        self.session.commit()
-        
         Profile.create_profile(username)
-        
-        return UserResponse(username=username, profile_pic=None)
 
-    def login(self, username: str, password: str) -> UserResponse:
+        return {"username": username, "profile_pic": None}
+
+    def login(self, username: str, password: str) -> dict:
         """
         Authenticates a user to log into the system with their account credentials.
 
         Args:
-           username (str): The username for login.
-           password (str): The password for login.
+            username (str): The username for login.
+            password (str): The password for login.
 
         Returns:
-            UserResponse: The response containing user data.
+            dict: The response containing user data.
         """
-        user = self.session.query(User).filter_by(username=username, password=password).first()
-        if user:
-            return UserResponse(username=user.username, profile_pic=None)
+        hashed_password = hashlib.sha256(password.encode()).hexdigest()
+        query = sql.SQL("SELECT username FROM users WHERE username = %s AND password = %s;")
+        self.cursor.execute(query, (username, hashed_password))
+        result = self.cursor.fetchone()
+        if result:
+            return {"username": result[0], "profile_pic": None}
         else:
             raise ValueError("Invalid username or password.")
 
-
+    def close(self):
+        """
+        Closes the database connection.
+        """
+        self.cursor.close()
+        self.conn.close()
 
 
         
