@@ -1,62 +1,44 @@
-import hashlib
 import psycopg2
-from psycopg2 import sql
-from .profile import Profile
-
+import hashlib
 class Authentication:
-    """
-    This class manages user authentication operations, including registration 
-    and login.
-    """
+    def __init__(self, dbname, user, password, host='localhost', port=5432):
+        self.connection = psycopg2.connect(
+            dbname=dbname,
+            user=user,
+            password=password,
+            host=host,
+            port=port
+        )
+        self.cursor = self.connection.cursor()
 
-    def __init__(self, db_url: str):
-        """
-        Initializes the Authentication class with the database URL and name.
+    def register(self, username, password):
+        try:
+            hashed_password = hashlib.sha256(password.encode()).hexdigest()
+            self.cursor.execute(
+                "INSERT INTO users (username, password) VALUES (%s, %s)",
+                (username, hashed_password)
+            )
+            self.connection.commit()
+            return "User registered successfully"
+        except psycopg2.IntegrityError:
+            self.connection.rollback()
+            return "Username already exists"
 
-        Args:
-            db_url (str): The URL for connecting to the PostgreSQL database.
-        """
-        self.conn = psycopg2.connect(db_url)
-        self.cursor = self.conn.cursor()
-
-   def sign_in(self, username: str, password: str):
-        """
-        Registers a new user in the system with a specified username and password.
-
-        Args:
-           username (str): The desired username for the new user.
-           password (str): The password for the new user.
-        """
-        Profile.create_profile(username)
-
-        return {"username": username, "profile_pic": None}
-
-    def login(self, username: str, password: str) -> dict:
-        """
-        Authenticates a user to log into the system with their account credentials.
-
-        Args:
-            username (str): The username for login.
-            password (str): The password for login.
-
-        Returns:
-            dict: The response containing user data.
-        """
+    def login(self, username, password):
         hashed_password = hashlib.sha256(password.encode()).hexdigest()
-        query = sql.SQL("SELECT username FROM users WHERE username = %s AND password = %s;")
-        self.cursor.execute(query, (username, hashed_password))
-        result = self.cursor.fetchone()
-        if result:
-            return {"username": result[0], "profile_pic": None}
+        self.cursor.execute(
+            "SELECT * FROM users WHERE username = %s AND password = %s",
+            (username, hashed_password)
+        )
+        user = self.cursor.fetchone()
+        if user:
+            return "Login successful"
         else:
-            raise ValueError("Invalid username or password.")
+            return "Invalid username or password"
 
-    def close(self):
-        """
-        Closes the database connection.
-        """
+    def __del__(self):
         self.cursor.close()
-        self.conn.close()
+        self.connection.close()
 
 
-        
+auth = Authentication(dbname="project_db", user="postgres", password="postgres")
