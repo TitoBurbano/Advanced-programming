@@ -124,7 +124,7 @@ def create_playlist(playlist_name: str):
     Returns:
         str: Mensaje de éxito o error.
     """
-    user.username = "default"  # Debería asignarse después del login
+    user.username = "default"  
     return user.create_playlist(playlist_name)
 
 @app.post("/add-song-to-playlist")
@@ -139,7 +139,7 @@ def add_song_to_a_playlist(playlist_name: str, song_title: str):
     Returns:
         str: Mensaje de éxito o error.
     """
-    user.username = "default"  # Debería asignarse después del login
+    user.username = "default"  
     return user.add_song_to_playlist(playlist_name, song_title)
 
 @app.post("/upload-song")

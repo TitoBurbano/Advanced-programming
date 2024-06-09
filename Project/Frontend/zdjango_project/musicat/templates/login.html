@@ -16,7 +16,7 @@
     </form>
     <script>
         document.getElementById('login-form').addEventListener('submit', function(event) {
-            event.preventDefault();  // Evita el comportamiento por defecto del botón de submit
+            event.preventDefault();  
 
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
@@ -36,7 +36,7 @@
             .then(response => response.json())
             .then(data => {
                 if (data.message) {
-                    window.location.href = "/home"; // Ajusta la URL de redirección según sea necesario
+                    window.location.href = "/home"; 
                 } else {
                     alert(data.error);
                 }
