@@ -11,6 +11,7 @@ authentication = Authentication(
     user="postgres",
     password="postgres"
 )
+
 user = User(username="default")
 
 @app.get("/genre/{genre_name}/songs")
