@@ -34,5 +34,9 @@ def login(request):
 def register(request):
     return render(request, 'register.html')
 
-def home(request):
-    return render(request, 'home.html')
+def musicat(request):
+    return render(request, 'musicat.html')
+
+def upload(request):
+    return render(request, 'upload.html')
+

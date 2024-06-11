@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en" style="background-color: black;">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Musicat</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: black;
+            color: white; /* Añadido */
+        }
+        header {
+            background-color: rgb(221, 83, 3);
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            color: white;
+        }
+        .logo {
+            width: 100px;
+        }
+        .search {
+            flex: 1;
+            margin: 0 10px;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: white;
+            color: black;
+        }
+        .menu {
+            display: flex;
+            justify-content: center;
+        }
+        .menu a {
+            text-decoration: none;
+            color: white;
+            margin: 0 10px;
+        }
+        .song-list {
+            margin: 20px;
+        }
+        .play-btn {
+            background-color: transparent;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 50%;
+            border-top: 15px solid transparent;
+            border-bottom: 15px solid transparent;
+            border-left: 25px solid white;
+        }
+        .upload-btn {
+            background-color: #fc5e02;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div>
+            <img src="logo.png" alt="Logo" class="logo">
+        </div>
+        <div class="search">
+            <input type="text" placeholder="Search...">
+        </div>
+        <div class="menu">
+            <a href="#">Playlists</a>
+            <a href="#">Genres</a>
+        </div>
+    </header>
+
+    <div class="song-list">
+        <div>
+            <button class="play-btn" onclick="playSong('https://www.youtube.com/watch?v=HAfFfqiYLp0')">Play</button>
+            All of the ligths - Kanye West
+        </div>
+        <div>
+            <button class="play-btn" onclick="playSong('youtube_link')">Play</button>
+            Goosebumps - Travis scott
+        </div>
+        <div>
+            <button class="play-btn" onclick="playSong('youtube_link')">Play</button>
+            They not like us - Kendrick Lamar
+        </div>
+        <div>
+            <button class="play-btn" onclick="playSong('youtube_link')">Play</button>
+            Lose Yourself - Eminem
+        </div>
+        <div>
+            <button class="play-btn" onclick="playSong('youtube_link')">Play</button>
+            Bohemian Rhapsody - Queen
+        </div>
+        <div>
+            <button class="play-btn" onclick="playSong('youtube_link')">Play</button>
+            Stairway to Heaven - Led Zeppelin
+        </div>
+        <div>
+            <button class="play-btn" onclick="playSong('youtube_link')">Play</button>
+            Hotel California - Eagles
+        </div>
+        <div>
+            <button class="play-btn" onclick="playSong('youtube_link')">Play</button>
+            Imagine - John Lennon
+        </div>
+        <div>
+            <button class="play-btn" onclick="playSong('youtube_link')">Play</button>
+            Smells Like Teen Spirit - Nirvana
+        </div>
+        <div>
+            <button class="play-btn" onclick="playSong('youtube_link')">Play</button>
+            Hey Jude - The Beatles
+        </div>
+        <div>
+            <button class="play-btn" onclick="playSong('youtube_link')">Play</button>
+            Billie Jean - Michael Jackson
+        </div>
+        <div>
+            <button class="play-btn" onclick="playSong('youtube_link')">Play</button>
+            Like a Rolling Stone - Bob Dylan
+        </div>
+        <div>
+            <button class="play-btn" onclick="playSong('youtube_link')">Play</button>
+            Johnny B. Goode - Chuck Berry
+        </div>
+        <div>
+            <button class="play-btn" onclick="playSong('youtube_link')">Play</button>
+            Smells Like Teen Spirit - Nirvana
+        </div>
+        <div>
+            <button class="play-btn" onclick="playSong('youtube_link')">Play</button>
+            Hallelujah - Jeff Buckley
+        </div>
+        <div>
+            <button class="play-btn" onclick="playSong('youtube_link')">Play</button>
+            Purple Rain - Prince
+        </div>
+        <div>
+            <button class="play-btn" onclick="playSong('youtube_link')">Play</button>
+            All Along the Watchtower - Jimi Hendrix
+        </div>
+        <div>
+            <button class="play-btn" onclick="playSong('youtube_link')">Play</button>
+            Thunderstruck - AC/DC
+        </div>
+        
+    </div>
+
+    <div style="display: flex; justify-content: flex-end; padding: 10px;">
+        <a href="{% url 'upload' %}" class="upload-btn">Upload Song</a>
+    </div>
+
+    <script>
+        function playSong(youtubeLink) {
+            console.log('Reproduciendo canción:', youtubeLink);
+        }
+    </script>
+</body>
+</html>
+
