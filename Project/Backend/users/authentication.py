@@ -1,6 +1,14 @@
-import psycopg2
+"""
+This file contains the information of the authentication class.
+"""
+
 import hashlib
+import psycopg2
+
 class Authentication:
+    """
+    The authentication class checks the login and registration of users to Musicat.
+    """
     def __init__(self, dbname, user, password, host='localhost', port=5432):
         self.connection = psycopg2.connect(
             dbname=dbname,
@@ -12,6 +20,16 @@ class Authentication:
         self.cursor = self.connection.cursor()
 
     def register(self, username, password):
+        """
+        This method creates a new user.
+
+        Args:
+        username (str): Username.
+        password (str): Password.
+
+        Returns:
+        str: Success or error message.
+        """
         try:
             hashed_password = hashlib.sha256(password.encode()).hexdigest()
             self.cursor.execute(
@@ -25,6 +43,16 @@ class Authentication:
             return "Username already exists"
 
     def login(self, username, password):
+        """
+        This method verifies that the data is correct and allows the user to enter.
+
+        Args:
+        username (str): Username.
+        password (str): Password.
+
+        Returns:
+        str: Success or error message.
+        """
         hashed_password = hashlib.sha256(password.encode()).hexdigest()
         self.cursor.execute(
             "SELECT * FROM users WHERE username = %s AND password = %s",

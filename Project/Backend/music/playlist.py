@@ -7,11 +7,24 @@ Author: Tito Burbano Plazas <titoalejandro3118@gmail.com>
 import psycopg2
 
 class Playlist:
+    """
+    The playlist class is created to show the behavior of a playlist.
+    """
     def __init__(self, name):
         self.name = name
         self.songs = []
 
     def add_song(self, song_title):
+        """
+        The add_song method is used to add a song directly from within the playlist.
+        
+        Args:
+        playlist_name (str): Name of the playlist.
+        song_title (str): Song title.
+
+        Returns:
+        str: Success or error message.
+        """
         try:
             connection = psycopg2.connect(
                 dbname="project_db",
@@ -30,6 +43,16 @@ class Playlist:
             connection.close()
 
     def remove_song(self, song_title):
+        """
+        The remove_song method is used to remove a song that is within a playlist.
+        
+        Args:
+        playlist_name (str): Name of the playlist.
+        song_title (str): Song title.
+
+        Returns:
+        str: Success or error message.
+        """
         try:
             connection = psycopg2.connect(
                 dbname="project_db",
@@ -48,6 +71,15 @@ class Playlist:
             connection.close()
 
     def get_playlist_songs(self):
+        """
+        This method is used to obtain a list of the songs that are within a playlist.
+        
+        Args:
+        playlist_name (str): Name of the playlist.
+
+        Returns:
+        list: List of songs in the playlist.
+        """
         try:
             connection = psycopg2.connect(
                 dbname="project_db",
